@@ -1,0 +1,58 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: campus-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: campus
+      POSTGRES_PASSWORD: campus
+      POSTGRES_DB: campus
+    ports:
+      - '5432:5432'
+    volumes:
+      - campus-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U campus']
+      interval: 5s
+      retries: 10
+
+  adminer:
+    image: adminer:latest
+    container_name: campus-adminer
+    restart: unless-stopped
+    ports:
+      - '8081:8080'
+    depends_on:
+      - db
+
+  api:
+    build:
+      context: ./apps/api
+    container_name: campus-api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: 'postgresql://campus:campus@db:5432/campus?schema=public'
+      JWT_SECRET: 'change-this-to-a-long-random-string'
+      JWT_EXPIRES_IN: '12h'
+      PORT: '4000'
+      WEB_ORIGIN: 'http://localhost:5173'
+      ANTHROPIC_API_KEY: '${ANTHROPIC_API_KEY:-}'
+      ANTHROPIC_MODEL: '${ANTHROPIC_MODEL:-claude-sonnet-4-6}'
+    ports:
+      - '4000:4000'
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./apps/web
+    container_name: campus-web
+    restart: unless-stopped
+    ports:
+      - '5173:80'
+    depends_on:
+      - api
+
+volumes:
+  campus-data:
