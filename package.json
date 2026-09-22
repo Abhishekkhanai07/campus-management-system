@@ -9,6 +9,8 @@
     "db:down": "docker compose down",
     "setup": "cd apps/api && npx prisma generate && npx prisma db push && npm run seed",
     "dev:api": "cd apps/api && npm run dev",
-    "dev:web": "cd apps/web && npm run dev"
+    "dev:web": "cd apps/web && npm run dev",
+    "render:build": "cd apps/api && npm install && npx prisma generate && npx prisma db push && npm run seed && npm run build",
+    "render:start": "cd apps/api && npm run start:prod"
   }
 }
