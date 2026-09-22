@@ -16,6 +16,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { AuditModule } from './audit/audit.module';
 import { NoticesModule } from './notices/notices.module';
 import { AiModule } from './ai/ai.module';
+import { FeedbackModule } from './feedback/feedback.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import { AuditInterceptor } from './common/interceptors/audit.interceptor';
@@ -38,6 +39,7 @@ import { AuditInterceptor } from './common/interceptors/audit.interceptor';
     AuditModule,
     NoticesModule,
     AiModule,
+    FeedbackModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },

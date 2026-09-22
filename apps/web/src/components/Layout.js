@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, GraduationCap, CalendarCheck, CalendarDays, Repeat, FileText, ClipboardList, Wallet, ShieldCheck, Settings, LogOut, Menu, X, UserCog, BookOpen, Bell, } from 'lucide-react';
+import { LayoutDashboard, Users, GraduationCap, CalendarCheck, CalendarDays, Repeat, FileText, ClipboardList, Wallet, ShieldCheck, Settings, LogOut, Menu, X, UserCog, BookOpen, Bell, MessageSquareWarning, } from 'lucide-react';
 import { useAuth, roleLabel } from '../lib/auth';
 import { initials } from '../lib/format';
 import Assistant from './Assistant';
@@ -22,6 +22,7 @@ const NAV = [
     { to: '/me/results', label: 'My results', icon: BookOpen, roles: ['STUDENT', 'PARENT'] },
     { to: '/me/fees', label: 'My fees', icon: Wallet, roles: ['STUDENT', 'PARENT'] },
     { to: '/notices', label: 'Notices', icon: Bell, roles: ['SUPER_ADMIN', 'ADMIN', 'HOD', 'TEACHER', 'STUDENT', 'PARENT', 'ACCOUNTANT', 'OFFICE'] },
+    { to: '/feedback', label: 'Student feedback', icon: MessageSquareWarning, roles: ['SUPER_ADMIN', 'ADMIN', 'HOD', 'STUDENT'] },
     { to: '/audit', label: 'Activity log', icon: ShieldCheck, roles: ['SUPER_ADMIN', 'ADMIN'] },
     { to: '/setup', label: 'Setup', icon: Settings, roles: ['SUPER_ADMIN', 'ADMIN'] },
 ];

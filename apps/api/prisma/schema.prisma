@@ -94,6 +94,13 @@ enum SubstitutionStatus {
   CONDUCTED
 }
 
+enum ComplaintStatus {
+  OPEN
+  IN_REVIEW
+  RESOLVED
+  CLOSED
+}
+
 // ---------------------------------------------------------------- core / setup
 
 model Institute {
@@ -129,6 +136,7 @@ model AcademicYear {
   exams        Exam[]
   feeStructures FeeStructure[]
   holidays     Holiday[]
+  monthlyFeedback MonthlyClassFeedback[]
   createdAt    DateTime @default(now())
 }
 
@@ -176,6 +184,7 @@ model Section {
   slots        TimetableSlot[]
   assignments  Assignment[]
   examSchedules ExamSchedule[]
+  monthlyFeedback MonthlyClassFeedback[]
 
   @@unique([classLevelId, name, academicYearId])
 }
@@ -274,6 +283,8 @@ model Student {
   results      Result[]
   fees         StudentFee[]
   leaves       StudentLeave[]
+  complaints   StudentComplaint[]
+  monthlyFeedback MonthlyClassFeedback[]
   createdAt    DateTime @default(now())
 }
 
@@ -336,6 +347,7 @@ model Staff {
   coverSubs     Substitution[] @relation("SubstituteTeacher")
   assignments   Assignment[]
   leaveBalances LeaveBalance[]
+  complaintsAgainst StudentComplaint[]
   createdAt     DateTime @default(now())
 }
 
@@ -698,6 +710,44 @@ model FeePayment {
 }
 
 // ---------------------------------------------------------------- comms & audit
+
+model StudentComplaint {
+  id              String          @id @default(cuid())
+  studentId       String
+  student         Student         @relation(fields: [studentId], references: [id])
+  teacherId       String
+  teacher         Staff           @relation(fields: [teacherId], references: [id])
+  subject         String
+  description     String
+  status          ComplaintStatus @default(OPEN)
+  response        String?
+  respondedById   String?
+  respondedAt     DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([teacherId])
+}
+
+model MonthlyClassFeedback {
+  id             String   @id @default(cuid())
+  studentId      String
+  student        Student  @relation(fields: [studentId], references: [id])
+  sectionId      String
+  section        Section  @relation(fields: [sectionId], references: [id])
+  academicYearId String
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+  month          DateTime @db.Date
+  rating         Int
+  comments       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([studentId, academicYearId, month])
+  @@index([sectionId, month])
+}
 
 model Notice {
   id         String @id @default(cuid())

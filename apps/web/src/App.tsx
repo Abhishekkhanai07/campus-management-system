@@ -24,6 +24,7 @@ import ChangePassword from './pages/ChangePassword';
 import MyAttendance from './pages/me/MyAttendance';
 import MyResults from './pages/me/MyResults';
 import MyFees from './pages/me/MyFees';
+import Feedback from './pages/Feedback';
 
 function Protected({ children }: { children: React.ReactNode }) {
   const user = useAuth((s) => s.user);
@@ -54,6 +55,7 @@ export default function App() {
       <Route path="/exams/:examId/marks" element={<Protected><MarksEntry /></Protected>} />
       <Route path="/fees" element={<Protected><Fees /></Protected>} />
       <Route path="/notices" element={<Protected><Notices /></Protected>} />
+      <Route path="/feedback" element={<Protected><Feedback /></Protected>} />
       <Route path="/audit" element={<Protected><AuditLog /></Protected>} />
       <Route path="/setup" element={<Protected><Setup /></Protected>} />
       <Route path="/change-password" element={<Protected><ChangePassword /></Protected>} />

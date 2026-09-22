@@ -26,19 +26,19 @@ export class ExamsController {
     return this.svc.marksSheet(user, examId, sectionId, subjectId);
   }
 
-  @Roles('TEACHER', 'HOD', 'ADMIN')
+  @Roles('TEACHER', 'HOD', 'ADMIN', 'SUPER_ADMIN')
   @Post('marks')
   @Audit({ module: 'EXAM', action: 'ENTER_MARKS', entity: 'Mark' })
   enterMarks(@CurrentUser() user: AuthUser, @Body() dto: EnterMarksDto) {
     return this.svc.enterMarks(user, dto);
   }
 
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'SUPER_ADMIN')
   @Post(':id/process')
   @Audit({ module: 'EXAM', action: 'PROCESS_RESULTS', entity: 'Exam' })
   process(@Param('id') id: string) { return this.svc.processResults(id); }
 
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'SUPER_ADMIN')
   @Post(':id/publish')
   @Audit({ module: 'EXAM', action: 'PUBLISH_RESULT', entity: 'Exam' })
   publish(@Param('id') id: string) { return this.svc.publish(id); }

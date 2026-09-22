@@ -10,6 +10,7 @@ import {
 export default function MarksEntry() {
   const { examId } = useParams();
   const user = useAuth((s) => s.user)!;
+  const canCorrectLocked = ['ADMIN', 'SUPER_ADMIN'].includes(user.role);
   const [sectionId, setSectionId] = useState('');
   const [subjectId, setSubjectId] = useState('');
   const [values, setValues] = useState<Record<string, string>>({});
@@ -112,7 +113,9 @@ export default function MarksEntry() {
             <div className="mb-4">
               <Note>
                 Marks for this exam are locked because results have been processed.
-                An admin correction is needed to change them.
+                {canCorrectLocked
+                  ? ' You can correct them as an administrator, then reprocess the results.'
+                  : ' An admin correction is needed to change them.'}
               </Note>
             </div>
           )}
@@ -133,7 +136,7 @@ export default function MarksEntry() {
                       <input
                         type="number"
                         value={values[r.studentId] ?? ''}
-                        disabled={sheet.isLocked}
+                        disabled={sheet.isLocked && !canCorrectLocked}
                         max={sheet.subject.maxMarks}
                         min={0}
                         onChange={(e) => setValues({ ...values, [r.studentId]: e.target.value })}
@@ -153,7 +156,9 @@ export default function MarksEntry() {
             </span>
             <div className="flex items-center gap-3">
               {saved && <span className="text-[13px] text-grass">{saved}</span>}
-              <Button onClick={save} disabled={sheet.isLocked}>Save marks</Button>
+              <Button onClick={save} disabled={sheet.isLocked && !canCorrectLocked}>
+                {sheet.isLocked ? 'Save correction' : 'Save marks'}
+              </Button>
             </div>
           </div>
         </>

@@ -77,8 +77,10 @@ export default function Exams() {
                     <Button size="sm" variant="ghost" onClick={() => setSelected(selected === e.id ? null : e.id)}>
                       Analysis
                     </Button>
-                    {isAdmin && e.status === 'MARKS_ENTRY' && (
-                      <Button size="sm" onClick={() => process.mutate(e.id)}>Process results</Button>
+                    {isAdmin && ['MARKS_ENTRY', 'LOCKED', 'PUBLISHED'].includes(e.status) && (
+                      <Button size="sm" onClick={() => process.mutate(e.id)}>
+                        {e.status === 'MARKS_ENTRY' ? 'Process results' : 'Reprocess results'}
+                      </Button>
                     )}
                     {isAdmin && e.status === 'LOCKED' && (
                       <Button size="sm" onClick={() => publish.mutate(e.id)}>Publish to students</Button>

@@ -171,6 +171,10 @@ export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={`${inputClass} ${props.className || ''}`} />;
 }
 
+export function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+  return <textarea {...props} className={`${inputClass} resize-y ${props.className || ''}`} />;
+}
+
 /* ---------------------------------------------------------------- table */
 
 export function Table({ head, children }: { head: React.ReactNode[]; children: React.ReactNode }) {

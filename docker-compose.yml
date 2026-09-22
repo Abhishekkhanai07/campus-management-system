@@ -30,12 +30,13 @@ services:
       context: ./apps/api
     container_name: campus-api
     restart: unless-stopped
+    env_file:
+      - ./apps/api/.env
     environment:
       DATABASE_URL: 'postgresql://campus:campus@db:5432/campus?schema=public'
-      JWT_SECRET: 'change-this-to-a-long-random-string'
       JWT_EXPIRES_IN: '12h'
       PORT: '4000'
-      WEB_ORIGIN: 'http://localhost:5173'
+      WEB_ORIGIN: '${WEB_ORIGIN:-http://localhost:5173}'
       ANTHROPIC_API_KEY: '${ANTHROPIC_API_KEY:-}'
       ANTHROPIC_MODEL: '${ANTHROPIC_MODEL:-claude-sonnet-4-6}'
     ports:

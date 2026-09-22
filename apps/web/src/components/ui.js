@@ -65,6 +65,9 @@ export function Select(props) {
 export function Input(props) {
     return _jsx("input", { ...props, className: `${inputClass} ${props.className || ''}` });
 }
+export function Textarea(props) {
+    return _jsx("textarea", { ...props, className: `${inputClass} resize-y ${props.className || ''}` });
+}
 /* ---------------------------------------------------------------- table */
 export function Table({ head, children }) {
     return (_jsx("div", { className: "scroll-x", children: _jsxs("table", { className: "w-full text-[13.5px]", children: [_jsx("thead", { children: _jsx("tr", { className: "text-left text-gray-500 border-b border-line", children: head.map((h, i) => (_jsx("th", { className: "font-medium px-4 py-2.5 whitespace-nowrap", children: h }, i))) }) }), _jsx("tbody", { className: "divide-y divide-line", children: children })] }) }));
